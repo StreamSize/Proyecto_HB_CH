@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oliver's Party Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="music-bg">
+        <span>🎵</span><span>⚽</span><span>🏊</span><span>🎵</span>
+        <span>🎹</span><span>🎁</span><span>🎵</span><span>🎼</span>
+    </div>
+
+    <div id="intro-screen">
+        <div class="invitation-card">
+            <h1 class="main-title">OLIVER'S</h1>
+            <h2 class="script-title">Party</h2>
+            <div class="divider-line"></div>
+            <p class="subtitle-bold">ACCESO BLOQUEADO 🔒</p>
+            <p class="details">Completa el laberinto para desbloquear la ubicación y hora.</p>
+            <button id="start-btn" class="btn-party">DESBLOQUEAR INVITACIÓN</button>
+        </div>
+    </div>
+
+    <div id="game-screen" class="hidden">
+        <canvas id="gameCanvas"></canvas>
+        
+        <div id="mobile-controls">
+            <div class="control-row">
+                <button id="btn-up" class="d-pad">⬆️</button>
+            </div>
+            <div class="control-row">
+                <button id="btn-left" class="d-pad">⬅️</button>
+                <div class="spacer"></div>
+                <button id="btn-right" class="d-pad">➡️</button>
+            </div>
+            <div class="control-row">
+                <button id="btn-down" class="d-pad">⬇️</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Acceso Concedido! - Oliver's Party</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* Estilo para el botón de música flotante */
+        #music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent-red);
+            color: white;
+            border: 2px solid black;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 3px 3px 0px black;
+            transition: transform 0.2s;
+        }
+        #music-control:active {
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="assets/musica.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+    </audio>
+
+    <div id="music-control">🔊</div>
+
+    <div class="music-bg">
+        <span>🎵</span><span>⚽</span><span>🏊</span><span>🎁</span>
+        <span>🎹</span><span>🎁</span><span>🎵</span><span>🎼</span>
+        <span>🎁</span><span>⚽</span><span>🎵</span><span>🏊</span>
+        <span>🎹</span><span>🎼</span><span>🎁</span><span>🎵</span>
+    </div>
+
+    <div class="win-card-style">
+        <h2 class="script-title-small">¡Acceso Concedido!</h2>
+        
+        <h1 class="main-title-small">OLIVER'S PARTY</h1>
+        <p class="subtitle-bold" style="color: var(--accent-red);">FÚTBOL | POOL PARTY</p>
+        
+        <div class="info-box">
+            <p class="big-date">SÁBADO 28 FEB | 16:00 PM</p>
+            <p class="address">📍 Calle Lago Valencia 157.<br>Rinconada del Lago, La Molina</p>
+        </div>
+
+        <div class="dont-forget">
+            <p class="script-subtitle">No olvides:</p>
+            <div class="icons-row">
+                <div class="icon-item">👕<br><span>Fútbol</span></div>
+                <div class="icon-item">🩳<br><span>Piscina</span></div>
+                <div class="icon-item">🎁<br><span>Regalo</span></div>
+                <div class="icon-item">🍾<br><span>Trago</span></div>
+            </div>
+        </div>
+
+        <a href="index.html" class="btn-party small" style="text-decoration: none; display: inline-block; margin-top: 20px;">
+            VER DE NUEVO
+        </a>
+    </div>
+
+  <script>
+        window.addEventListener('load', () => {
+            const audio = document.getElementById('bg-music');
+            const btn = document.getElementById('music-control');
+            
+            // --- TUS TIEMPOS ---
+            const startSeconds = 117; // 1:57
+            const endSeconds = 146;   // 2:26
+            
+            // 1. Configuración incial
+            audio.currentTime = startSeconds;
+            audio.volume = 0.5;
+
+            // 2. Bucle (Loop)
+            audio.addEventListener('timeupdate', () => {
+                if (audio.currentTime >= endSeconds) {
+                    audio.currentTime = startSeconds;
+                    audio.play();
+                }
+            });
+
+            // 3. Función para activar sonido
+            const activateSound = () => {
+                // Solo si está pausado intentamos reproducir
+                if (audio.paused) {
+                    audio.play()
+                    .then(() => {
+                        btn.textContent = "🔊"; // Cambiar icono a Sonido
+                        console.log("Música iniciada");
+                    })
+                    .catch((e) => {
+                        console.log("Auto-play bloqueado por el navegador", e);
+                        btn.textContent = "🔇"; // Mantener en Mute si falla
+                    });
+                }
+            };
+
+            // 4. Intentar reproducir automáticamente (puede fallar en Chrome/Edge)
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // Si funcionó el autoplay
+                    btn.textContent = "🔊";
+                }).catch(() => {
+                    // Si falló (lo más probable), esperamos un clic en CUALQUIER lado
+                    btn.textContent = "🔇"; // Icono de silencio para avisar
+                    
+                    // Al primer toque en la pantalla, arranca la música
+                    document.body.addEventListener('click', () => {
+                        activateSound();
+                    }, { once: true }); // "once: true" significa que esto solo pasa la primera vez
+                });
+            }
+
+            // 5. Botón manual (El interruptor)
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Para que no choque con el clic del cuerpo
+                if (audio.paused) {
+                    activateSound();
+                } else {
+                    audio.pause();
+                    btn.textContent = "🔇";
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

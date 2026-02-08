@@ -1,0 +1,291 @@
+/* --- CONFIGURACIÓN GENERAL --- */
+:root {
+    --bg-white: #ffffff;
+    --text-black: #000000;
+    --accent-red: #ff3b3b; /* Rojo vibrante de la invitación */
+    --font-main: 'Montserrat', sans-serif;
+    --font-script: 'Great Vibes', cursive;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-main);
+    background-color: var(--bg-white);
+    color: var(--text-black);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* --- DECORACIÓN DE FONDO (Notas Musicales y Regalos) --- */
+.music-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden; /* Asegura que no se salgan de la pantalla */
+}
+
+.music-bg span {
+    position: absolute;
+    font-size: 3rem;
+    color: var(--text-black);
+    /* AQUI ESTÁ EL CAMBIO: Opacidad aumentada de 0.05 a 0.25 */
+    opacity: 0.25; 
+    animation: floatMusic 15s infinite linear;
+}
+
+/* Posiciones para los 16 elementos */
+.music-bg span:nth-child(1) { top: 10%; left: 10%; animation-duration: 12s; }
+.music-bg span:nth-child(2) { top: 20%; right: 20%; font-size: 5rem; animation-duration: 18s; }
+.music-bg span:nth-child(3) { bottom: 15%; left: 30%; animation-duration: 20s; }
+.music-bg span:nth-child(4) { bottom: 30%; right: 10%; font-size: 4rem; animation-duration: 25s; }
+.music-bg span:nth-child(5) { top: 50%; left: 5%; animation-duration: 14s; }
+.music-bg span:nth-child(6) { top: 5%; right: 5%; animation-duration: 16s; }
+.music-bg span:nth-child(7) { bottom: 5%; right: 40%; animation-duration: 22s; }
+.music-bg span:nth-child(8) { top: 60%; right: 60%; animation-duration: 19s; }
+/* Nuevos elementos */
+.music-bg span:nth-child(9) { top: 15%; left: 50%; font-size: 2.5rem; animation-duration: 17s; }
+.music-bg span:nth-child(10) { bottom: 25%; left: 15%; font-size: 3.5rem; animation-duration: 21s; }
+.music-bg span:nth-child(11) { top: 35%; right: 35%; font-size: 3rem; animation-duration: 13s; }
+.music-bg span:nth-child(12) { bottom: 10%; left: 60%; font-size: 4.5rem; animation-duration: 24s; }
+.music-bg span:nth-child(13) { top: 75%; left: 25%; font-size: 2rem; animation-duration: 15s; }
+.music-bg span:nth-child(14) { top: 5%; left: 80%; font-size: 3rem; animation-duration: 19s; }
+.music-bg span:nth-child(15) { bottom: 45%; right: 5%; font-size: 2.8rem; animation-duration: 23s; }
+.music-bg span:nth-child(16) { top: 85%; right: 25%; font-size: 3.2rem; animation-duration: 16s; }
+
+@keyframes floatMusic {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(15deg); /* Movimiento un poco más notorio */ }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* --- TARJETAS (INICIO Y FINAL) --- */
+.invitation-card, .win-card-style {
+    background: var(--bg-white);
+    border: 4px solid var(--text-black);
+    box-shadow: 10px 10px 0px var(--text-black); /* Sombra sólida estilo dibujo */
+    padding: 3rem;
+    text-align: center;
+    max-width: 500px;
+    z-index: 10;
+    position: relative;
+}
+
+/* Tipografías */
+.main-title, .main-title-small {
+    font-size: 4rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 0.9;
+    letter-spacing: -2px;
+}
+
+.script-title, .script-title-small {
+    font-family: var(--font-script);
+    color: var(--accent-red);
+    font-size: 5rem;
+    margin: -15px 0 20px 0;
+    transform: rotate(-5deg);
+}
+
+.divider-line {
+    height: 4px;
+    background: var(--text-black);
+    width: 60px;
+    margin: 20px auto;
+}
+
+.subtitle-bold {
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.details {
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+/* Botones */
+.btn-party {
+    background: var(--accent-red);
+    color: white;
+    border: 3px solid var(--text-black);
+    padding: 15px 30px;
+    font-family: var(--font-main);
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 5px 5px 0px var(--text-black);
+    transition: transform 0.2s;
+}
+
+.btn-party:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0px var(--text-black);
+}
+
+.btn-party:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--text-black);
+}
+
+/* --- PANTALLA DE JUEGO --- */
+.hidden { display: none !important; }
+
+#game-screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+canvas {
+    background: var(--bg-white);
+    border: 4px solid var(--text-black);
+    box-shadow: 10px 10px 0px rgba(0,0,0,0.1);
+}
+
+/* --- ESTILOS ESPECÍFICOS DEL FINAL (WIN) --- */
+.win-card-style {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 15px 15px 0px var(--accent-red); /* Sombra roja al ganar */
+    padding: 20px 40px;
+    width: 90%;
+    max-width: 450px;
+}
+
+.main-title-small { font-size: 2.5rem; }
+.script-title-small { font-size: 2.5rem; margin-bottom: 5px; transform: none; }
+
+.info-box {
+    border-top: 2px dashed var(--text-black);
+    border-bottom: 2px dashed var(--text-black);
+    padding: 15px 0;
+    margin: 20px 0;
+}
+
+.big-date {
+    color: var(--accent-red);
+    font-weight: 900;
+    font-size: 1.3rem;
+    margin: 0 0 5px 0;
+}
+
+.address {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.script-subtitle {
+    font-family: var(--font-script);
+    font-size: 2rem;
+    margin: 0 0 10px 0;
+    transform: rotate(-3deg);
+}
+
+.icons-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.icon-item { font-size: 1.5rem; }
+.icon-item span {
+    display: block;
+    font-size: 0.6rem;
+    font-family: var(--font-main);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-party.small { padding: 10px 20px; font-size: 0.8rem; }
+
+/* Responsive */
+@media (max-width: 600px) {
+    .main-title { font-size: 3rem; }
+    .script-title { font-size: 4rem; }
+    .invitation-card { padding: 2rem; width: 85%; }
+    canvas { width: 95%; height: auto; }
+}
+
+
+/* --- RESPONSIVE / MÓVIL --- */
+
+/* 1. Ajuste del Canvas (Juego) */
+canvas {
+    max-width: 95%; /* Que nunca sea más ancho que la pantalla */
+    height: auto;   /* Mantener proporción */
+    touch-action: none; /* Evitar scroll al tocar el juego */
+}
+
+/* 2. Controles Táctiles (D-PAD) */
+#mobile-controls {
+    display: none; /* Oculto en PC por defecto */
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+    user-select: none; /* Evitar seleccionar texto al tocar */
+}
+
+.control-row {
+    display: flex;
+    gap: 20px;
+}
+
+.d-pad {
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.8); /* Botón oscuro */
+    color: white;
+    border: 2px solid var(--accent-red);
+    border-radius: 50%; /* Redondos */
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    touch-action: manipulation; /* Mejor respuesta al tacto */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.d-pad:active {
+    background: var(--accent-red);
+    transform: scale(0.9);
+}
+
+.spacer {
+    width: 60px; /* Espacio en el centro de las flechas */
+}
+
+/* --- MEDIA QUERY: Solo para Celulares (menos de 850px) --- */
+@media (max-width: 850px) {
+    /* Mostrar controles */
+    #mobile-controls {
+        display: flex;
+    }
+
+    /* Ajustar textos de bienvenida */
+    .main-title { font-size: 2.5rem; }
+    .script-title { font-size: 3.5rem; }
+    .subtitle-bold { font-size: 1.2rem !important; }
+    .details { font-size: 1rem !important; }
+    
+    /* Ajustar tarjeta */
+    .invitation-card { padding: 1.5rem; width: 90%; }
+}
