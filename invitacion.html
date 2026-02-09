@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>¡Acceso Concedido! - Oliver's Party</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -10,39 +10,52 @@
     <link rel="stylesheet" href="styles.css">
     
     <style>
-        /* Estilo para el botón de música flotante */
-        #music-control {
+        /* ESTILOS DEL "TELÓN" PARA IPHONE */
+        #ios-overlay {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--accent-red);
-            color: white;
-            border: 2px solid black;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 100;
-            display: flex;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1000; /* Por encima de todo */
+            display: flex; /* Se usa flex para centrar */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: 3px 3px 0px black;
-            transition: transform 0.2s;
+            text-align: center;
+            transition: opacity 0.5s;
         }
-        #music-control:active {
-            transform: scale(0.9);
+
+        .hidden-overlay {
+            opacity: 0;
+            pointer-events: none;
+            display: none !important;
+        }
+
+        #music-control {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--accent-red); color: white;
+            border: 2px solid black; border-radius: 50%;
+            width: 50px; height: 50px; font-size: 1.5rem;
+            cursor: pointer; z-index: 100;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 3px 3px 0px black;
         }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop>
+    <audio id="bg-music" loop preload="auto">
         <source src="assets/musica.mp3" type="audio/mpeg">
-        Tu navegador no soporta audio.
     </audio>
 
-    <div id="music-control">🔊</div>
+    <div id="ios-overlay">
+        <h1 class="main-title" style="font-size: 2.5rem; margin-bottom: 20px;">¡GANASTE! 🏆</h1>
+        <p class="details">Tu invitación está lista</p>
+        <button id="unlock-btn" class="btn-party" style="font-size: 1.2rem; padding: 15px 40px;">
+            ABRIR SOBRE 📩
+        </button>
+    </div>
+
+    <div id="music-control">🔇</div>
 
     <div class="music-bg">
         <span>🎵</span><span>⚽</span><span>🏊</span><span>🎁</span>
@@ -53,7 +66,6 @@
 
     <div class="win-card-style">
         <h2 class="script-title-small">¡Acceso Concedido!</h2>
-        
         <h1 class="main-title-small">OLIVER'S PARTY</h1>
         <p class="subtitle-bold" style="color: var(--accent-red);">FÚTBOL | POOL PARTY</p>
         
@@ -73,24 +85,26 @@
         </div>
 
         <a href="index.html" class="btn-party small" style="text-decoration: none; display: inline-block; margin-top: 20px;">
-            VER DE NUEVO
+            JUGAR OTRA VEZ
         </a>
     </div>
 
-  <script>
+    <script>
         window.addEventListener('load', () => {
             const audio = document.getElementById('bg-music');
             const btn = document.getElementById('music-control');
+            const overlay = document.getElementById('ios-overlay');
+            const unlockBtn = document.getElementById('unlock-btn');
             
             // --- TUS TIEMPOS ---
             const startSeconds = 117; // 1:57
             const endSeconds = 146;   // 2:26
             
-            // 1. Configuración incial
+            // Configurar Audio
             audio.currentTime = startSeconds;
             audio.volume = 0.5;
 
-            // 2. Bucle (Loop)
+            // Lógica del Bucle
             audio.addEventListener('timeupdate', () => {
                 if (audio.currentTime >= endSeconds) {
                     audio.currentTime = startSeconds;
@@ -98,44 +112,36 @@
                 }
             });
 
-            // 3. Función para activar sonido
-            const activateSound = () => {
-                // Solo si está pausado intentamos reproducir
-                if (audio.paused) {
-                    audio.play()
-                    .then(() => {
-                        btn.textContent = "🔊"; // Cambiar icono a Sonido
-                        console.log("Música iniciada");
-                    })
-                    .catch((e) => {
-                        console.log("Auto-play bloqueado por el navegador", e);
-                        btn.textContent = "🔇"; // Mantener en Mute si falla
-                    });
+            // Función para iniciar música y quitar el telón
+            const startParty = () => {
+                // Asegurar tiempo
+                if(audio.currentTime < startSeconds || audio.currentTime > endSeconds) {
+                    audio.currentTime = startSeconds;
                 }
+                
+                audio.play().then(() => {
+                    // Si funcionó:
+                    btn.textContent = "🔊";
+                    overlay.classList.add('hidden-overlay'); // Ocultar telón suavemente
+                }).catch((e) => {
+                    // Si falló (iPhone bloqueado):
+                    console.log("Esperando interacción del usuario...");
+                    // No hacemos nada, el telón se queda visible esperando el clic
+                });
             };
 
-            // 4. Intentar reproducir automáticamente (puede fallar en Chrome/Edge)
-            const playPromise = audio.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    // Si funcionó el autoplay
-                    btn.textContent = "🔊";
-                }).catch(() => {
-                    // Si falló (lo más probable), esperamos un clic en CUALQUIER lado
-                    btn.textContent = "🔇"; // Icono de silencio para avisar
-                    
-                    // Al primer toque en la pantalla, arranca la música
-                    document.body.addEventListener('click', () => {
-                        activateSound();
-                    }, { once: true }); // "once: true" significa que esto solo pasa la primera vez
-                });
-            }
+            // INTENTO AUTOMÁTICO (Para Android/PC)
+            startParty();
 
-            // 5. Botón manual (El interruptor)
+            // PLAN B: BOTÓN MANUAL (Para iPhone)
+            unlockBtn.addEventListener('click', () => {
+                startParty();
+            });
+
+            // Botón de Mute flotante
             btn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Para que no choque con el clic del cuerpo
                 if (audio.paused) {
-                    activateSound();
+                    startParty();
                 } else {
                     audio.pause();
                     btn.textContent = "🔇";
