@@ -56,18 +56,22 @@ body {
 }
 
 /* --- 3. CONTENEDOR DE PANTALLA DE BIENVENIDA (LA SOLUCIÓN) --- */
+/* --- 3. CONTENEDOR DE PANTALLA DE BIENVENIDA --- */
 #intro-screen {
-    position: fixed; /* Usamos fixed para asegurar que cubra toda la pantalla del cel */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    display: flex;       /* Flexbox para centrar */
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center;     /* Centrar verticalmente */
-    background: rgba(255, 255, 255, 0.95); /* Fondo blanco casi sólido */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* CAMBIO AQUÍ: Antes era blanco, ahora transparente para ver los emojis */
+    background: transparent; 
+    
     z-index: 20;
-    padding: 20px; /* Un poco de aire en los bordes para celulares muy finos */
+    padding: 20px;
 }
 
 /* Estilo de la Tarjeta */
@@ -102,8 +106,9 @@ body {
 /* --- 4. PANTALLA DE JUEGO Y CANVAS --- */
 .hidden { display: none !important; }
 
+/* --- 4. PANTALLA DE JUEGO Y CANVAS --- */
 #game-screen {
-    position: fixed; /* Asegura pantalla completa */
+    position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
     display: flex;
@@ -111,7 +116,9 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 5;
-    background: var(--bg-white); /* Fondo blanco detrás del juego */
+    
+    /* CAMBIO AQUÍ: Fondo transparente para ver los emojis alrededor del juego */
+    background: transparent; 
 }
 
 canvas {
